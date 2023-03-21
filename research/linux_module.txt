@@ -1,0 +1,14 @@
+# To display a list of available TCP congestion control algorithms that are supported by the Linux kernel.
+    $ cat /proc/sys/net/ipv4/tcp_available_congestion_control
+eg: reno cubic 
+
+# To check current congestion control algorithm being used by the Linux kernel for TCP connections.
+    $ cat /proc/sys/net/ipv4/tcp_congestion_control  
+Alternatively:
+    $ sysctl net.ipv4.tcp_congestion_control
+
+
+
+
+
+
