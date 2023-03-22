@@ -5,9 +5,9 @@ These are the research papers that we referred to while working on this project.
 
 ## Phase 0
 
-1. [When machine learning meets congestion control: A survey and comparison](https://arxiv.org/pdf/2010.11397.pdf), Huiling Jiang, Qing Li, Yong Jiang, GengBiao Shen, Richard Sinnott, Chen Tian, Mingwei Xu
-1. [Congestion Control: A Renaissance with Machine Learning](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9351834), Wenting Wei, Huaxi Gu, and Baochun Li
-1. [A machine learning approach to improve congestion control over wireless computer networks](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1410316), Geurts, Pascal & El-Khayat, Ibtissam & Leduc, Guy.
+1. Jiang, H., Li, Q., Jiang, Y., Shen, G., Sinnott, R., Tian, C., & Xu, M. (2020). [When Machine Learning Meets Congestion Control: A Survey and Comparison](https://doi.org/https://arxiv.org/abs/2010.11397v1). arXiv.
+1. W. Wei, H. Gu and B. Li, "[Congestion Control: A Renaissance with Machine Learning](https://ieeexplore.ieee.org/document/9351834)," in IEEE Network, vol. 35, no. 4, pp. 262-269, July/August 2021, doi: 10.1109/MNET.011.2000603.
+1. P. Geurts, I. El Khayat and G. Leduc, "[A machine learning approach to improve congestion control over wireless computer networks](https://ieeexplore.ieee.org/document/1410316)," Fourth IEEE International Conference on Data Mining (ICDM'04), Brighton, UK, 2004, pp. 383-386, doi: 10.1109/ICDM.2004.10063.
 
 ## Phase 1
 1. J. Himeedah, A. Hamouda, M. Taher and S. Sati, "[TCP Congestion Analysis of Wired and Wireless Links Using NS3](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9837740)," 2022 IEEE 2nd International Maghreb Meeting of the Conference on Sciences and Techniques of Automatic Control and Computer Engineering (MI-STA), Sabratha, Libya, 2022, pp. 361-365, doi: 10.1109/MI-STA54861.2022.9837740.
