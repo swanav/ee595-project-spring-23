@@ -34,13 +34,16 @@
 # Mac files
 .DS_Store
 
-dashboard
+dashboard/**/*.log
+
+dashboard/backend
 
 # Python virtual environment
+dashboard/virtualenv
 dashboard/backend/venv
 
 # Node modules
-dashboard/backend/frontend/node_modules
+node_modules
 
 build
 

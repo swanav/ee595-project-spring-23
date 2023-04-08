@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning based TCP Congestion Control (ML-TCPCC)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Machine Learning based TCP Congestion Control (ML-TCPCC)</h1>
+        <form>
+            <div class="form-group">
+                <label for="network-topology-select">Network Topology:</label>
+                <select class="form-control" id="network-topology-select">
+                    <option value="btl1">1 Bottleneck Link</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="number-of-nodes-input">Number of Nodes:</label>
+                <input type="number" class="form-control" id="number-of-nodes-input" min="1" max="100" value="20" >
+            </div>
+            <div class="form-group">
+                <label for="number-of-nodes-input">Data Rate of Each Node (Kbps)</label>
+                <input type="number" class="form-control" id="rate-of-nodes-input" value="1024" >
+            </div>
+            <div class="form-group">
+                <label for="number-of-nodes-input">Data Rate of Congestion Link(s) (Kbps):</label>
+                <input type="number" class="form-control" id="rate-of-cong-link-input" value="512" >
+            </div>
+            <div class="form-group">
+                <label for="tcp-congestion-control-checkboxes">TCP Congestion Control Algorithm:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="reno" id="reno-checkbox">
+                    <label class="form-check-label" for="reno-checkbox">
+                        Reno
+                    </label>
+                </div>
+                <!-- <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="cubic" id="cubic-checkbox">
+                    <label class="form-check-label" for="cubic-checkbox">
+                        Cubic
+                    </label>
+                </div> -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" disabled value="mltcp" id="mltcp-checkbox">
+                    <label class="form-check-label" for="mltcp-checkbox">
+                        ML-TCPCC
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="start-test-button">Start Test</button>
+        </form>
+
+        <div id="visualization" style="display: none; margin: 100px;">
+            <h2>Running Experiment...</h2>
+            <!-- Add your visualization here -->
+        </div>
+
+        <div id="chart" style="display: none; margin: 100px;">
+            <h2>Test Results</h2>
+            <canvas id="chart-canvas" style="min-height: 400px; max-height: 70%"></canvas>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var chart;
+            // Get references to the HTML elements we need
+            var networkTopologySelect = document.getElementById("network-topology-select");
+            var numberOfNodesInput = document.getElementById("number-of-nodes-input");
+            var rateOfNodesInput = document.getElementById("rate-of-nodes-input");
+            var rateOfCongLinkInput = document.getElementById("rate-of-cong-link-input");
+            var renoCheckbox = document.getElementById("reno-checkbox");
+            // var cubicCheckbox = document.getElementById("cubic-checkbox");
+            var mltcpCheckbox = document.getElementById("mltcp-checkbox");
+            var startTestButton = document.getElementById("start-test-button");
+            var visualizationDiv = document.getElementById("visualization");
+            var chartDiv = document.getElementById("chart");
+            var chartCanvas = document.getElementById("chart-canvas");
+
+            // Add a click event listener to the Start Test button
+            startTestButton.addEventListener("click", function () {
+
+                // Get the selected network topology and number of nodes
+                var selectedNetworkTopology = networkTopologySelect.value;
+                var numberOfNodes = numberOfNodesInput.value;
+                var rateOfNodes = rateOfNodesInput.value;
+                var rateOfCongLink = rateOfCongLinkInput.value;
+
+                // Get the selected TCP congestion control algorithms
+                var selectedCongestionControlAlgorithms = [];
+                if (renoCheckbox.checked) {
+                    selectedCongestionControlAlgorithms.push("TcpNewReno");
+                }
+                // if (cubicCheckbox.checked) {
+                //     selectedCongestionControlAlgorithms.push("TcpCubic");
+                // }
+                if (mltcpCheckbox.checked) {
+                    selectedCongestionControlAlgorithms.push("TcpMl");
+                }
+
+                if (selectedCongestionControlAlgorithms.length === 0) {
+                    alert("Please select at least one TCP congestion control algorithm.");
+                    return;
+                }
+
+                // Hide the form and show the visualization
+                visualizationDiv.style.display = "block";
+                chartDiv.style.display = "none";
+
+                // Make an AJAX request to start the test
+                // Replace `YOUR_BACKEND_URL` with the URL of your Flask backend
+
+                var data = {
+                    networkTopology: selectedNetworkTopology,
+                    numberOfNodes: numberOfNodes,
+                    congestionControlAlgorithms: selectedCongestionControlAlgorithms,
+                    rateOfNodes,
+                    rateOfCongLink,
+                };
+
+                console.log(data)
+
+                $.ajax({
+                    url: "http://127.0.0.1:5000",
+                    method: "POST",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (response) {
+                        // If the test started successfully, show the results
+                        chartDiv.style.display = "block";
+                        visualizationDiv.style.display = "none";
+                        drawChart(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // If there was an error starting the test, show an alert with the error message
+                        alert(error);
+                        visualizationDiv.style.display = "none";
+                    }
+                });
+            });
+
+            // This function draws the chart using the results data
+            function drawChart(results) {
+
+                // If the chart already exists, destroy it
+                if (chart) {
+                    chart.destroy();
+                }
+
+                var chartData = {
+                    labels: results.labels,
+                    datasets: [{
+                        label: "Throughput",
+                        backgroundColor: "rgba(54, 162, 235, 0.5)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1,
+                        data: results.throughputs
+                    }]
+                };
+                var chartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        // yAxes: [{
+                        //     ticks: {
+                        //         beginAtZero: true
+                        //     }
+                        // }]
+                    }
+                };
+                chart = new Chart(chartCanvas, {
+                    type: "bar",
+                    data: chartData,
+                    options: chartOptions
+                });
+            }
+
+        });    
+    </script>
+</body>
+
+</html>
