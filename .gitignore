@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+# Mac files
+.DS_Store
+
+dashboard
+
+# Python virtual environment
+dashboard/backend/venv
+
+# Node modules
+dashboard/backend/frontend/node_modules
+
+build
+
+simulator/ns-allinone-3.38
+simulator/ns-allinone-3.38.**.*
