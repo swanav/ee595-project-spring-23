@@ -46,3 +46,5 @@ build
 
 simulator/ns-allinone-3.38
 simulator/ns-allinone-3.38.**.*
+simulator/*.tar
+simulator/*.tar.*
