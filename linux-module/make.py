@@ -13,6 +13,7 @@ def build() -> int:
     if 'build' not in files:
         os.mkdir('build')
     # Execute the makefile
+    print('Building...')
     ret: int = subprocess.run(['make']).returncode
     print('Build successful' if ret == 0 else 'Build failed')
 
