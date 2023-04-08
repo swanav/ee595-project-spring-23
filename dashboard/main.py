@@ -43,9 +43,11 @@ def run_test(data):
             stdout_file = open(f"stdout_{cc}.txt", "w")
             stderr_file = open(f"stderr_{cc}.txt", "w")
             process = subprocess.Popen(
-                ["./ns3", "run", "scratch/main", "--", f"--nodes={number_of_nodes}", f"--tcp_cc={cc}", f"--linkDataRate={rateOfCongLink}", f"--rate={rateOfNodes}"],
-                 cwd='/Users/swanav/Study/sem2/ee595-project/simulator/ns-allinone-3.38/ns-3.38'
-                 , stdout=stdout_file, stderr=stderr_file)
+                ["./ns3", "run", "scratch/congestion_simulations/topology_1", "--", f"--nodes={number_of_nodes}", f"--tcp_cc={cc}", f"--linkDataRate={rateOfCongLink}", f"--rate={rateOfNodes}"],
+                 cwd='/Users/swanav/Study/sem2/ee595-project/simulator/ns-allinone-3.38/ns-3.38', 
+                 stdout=stdout_file, 
+                 stderr=stderr_file,
+            )
             out = process.wait()
             print(out)
             stdout_file.close()
