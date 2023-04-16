@@ -1,11 +1,20 @@
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
 
 using namespace std;
 
 static const char *kModuleName = "tcp_ml";
 
+static void deactivate_tcp_ml() {
+    if (system("sudo sysctl -w net.ipv4.tcp_congestion_control=cubic")) {
+        cout << "Failed to deactivate TCP ML" << endl;
+        exit(1);
+    }
+}
+
 static void unload_kernel_module() {
+
     if (system("sudo rmmod tcp_ml")) {
         cout << "Failed to unload the kernel module" << endl;
         exit(1);
@@ -34,17 +43,13 @@ static void activate_tcp_ml() {
     }
 }
 
-static void deactivate_tcp_ml() {
-    if (system("sudo sysctl -w net.ipv4.tcp_congestion_control=cubic")) {
-        cout << "Failed to deactivate TCP ML" << endl;
-        exit(1);
-    }
-}
-
-
 // Make a curl request to the alice.txt file
 static void make_curl_request() {
+    cout << "Total time taken to download alice.txt: ";
+    flush(cout);
     system("curl -o /dev/null -s -w %{time_total} https://gaia.cs.umass.edu/wireshark-labs/alice.txt");
+    cout << endl;
+
 }
 
 
@@ -54,6 +59,7 @@ int main() {
     activate_tcp_ml();
     make_curl_request(); // Do something
     deactivate_tcp_ml();
+    sleep(1); // Need to sleep for a second to make sure the kernel module is unloaded else it will fail
     unload_kernel_module();
     return 0;
 }
