@@ -47,7 +47,7 @@ static void tcp_ml_set_ca_state(struct sock *sk, u8 new_state) {}
 static void tcp_ml_cwnd_event(struct sock *sk, enum tcp_ca_event event)
 {
     struct tcp_sock *tp = tcp_sk(sk);
-    LOG_KERN(KERN_INFO, "Handling congestion window event %d", tp->snd_cwnd);
+    LOG_KERN(KERN_INFO, "Handling congestion window event %p %d %d", sk, event, tp->snd_cwnd);
 
     switch (event) {
     case CA_EVENT_TX_START:

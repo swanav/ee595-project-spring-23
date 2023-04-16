@@ -31,6 +31,13 @@
 *.out
 *.app
 
+# Module compiled files
+*.cmd
+*.symvers
+*.order
+*.ko
+driver
+
 # Mac files
 .DS_Store
 
