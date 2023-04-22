@@ -4,11 +4,83 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <net/tcp.h>
+#include <linux/skbuff.h>
+#include <linux/netlink.h>
+#include <net/sock.h> 
 
 #define MODULE_TAG "tcp_ml"
 
 #define LOG_KERN(level, fmt, ...) \
     printk(level MODULE_TAG ": " fmt "\n", ##__VA_ARGS__)
+
+#define NETLINK_MY_PROTOCOL 31
+struct my_netlink_msg {
+    uint32_t cwnd;
+    uint32_t rtt;
+};
+
+static struct sock *netlink_sock = NULL;
+
+static void my_netlink_rcv_msg(struct sk_buff *skb)
+{
+
+    struct nlmsghdr *nlh;
+    int pid;
+    struct sk_buff *skb_out;
+    int msg_size;
+    //char *msg = "Hello from kernel";
+    struct my_netlink_msg *msg_data;
+    int res;
+
+    printk(KERN_INFO "Entering: %s\n", __FUNCTION__);
+
+    //msg_size = strlen(msg);
+    msg_size = sizeof(struct my_netlink_msg);
+
+    nlh = (struct nlmsghdr *)skb->data;
+    //printk(KERN_INFO "Netlink received msg payload:%s\n", (char *)nlmsg_data(nlh));
+
+    // Print reecived data 
+    struct my_netlink_msg *rcv_data = (struct my_netlink_msg *)NLMSG_DATA(nlh);
+    printk("Reecived cwnd: %d\n",rcv_data->cwnd);
+
+
+    pid = nlh->nlmsg_pid; /*pid of sending process */
+
+    skb_out = nlmsg_new(msg_size, 0);
+    if (!skb_out) {
+        printk(KERN_ERR "Failed to allocate new skb\n");
+        return;
+    }
+
+    nlh = nlmsg_put(skb_out, 0, 0, NLMSG_DONE, msg_size, 0);
+    NETLINK_CB(skb_out).dst_group = 0; /* not in mcast group */
+    //strncpy(nlmsg_data(nlh), msg, msg_size);
+
+    // Send dummy data
+    // msg_data->cwnd = 99;
+    // msg_data->rtt = 102;
+
+    msg_data = kzalloc(sizeof(struct my_netlink_msg), GFP_KERNEL);
+    if (!msg_data) {
+        printk(KERN_ERR "Failed to allocate memory for message data\n");
+        return;
+    }
+
+    msg_data->cwnd = 99;
+    msg_data->rtt = 102;
+
+    memcpy(nlmsg_data(nlh), msg_data, msg_size);
+
+    res = nlmsg_unicast(netlink_sock, skb_out, pid);
+    if (res < 0)
+        printk(KERN_INFO "Error while sending bak to user\n");
+
+}
+
+static struct netlink_kernel_cfg my_netlink_cfg = {
+    .input = my_netlink_rcv_msg,
+};
 
 /* initialize private data (optional) */
 static void tcp_ml_init(struct sock *sk) {
@@ -100,15 +172,31 @@ static struct tcp_congestion_ops tcp_ml = {
 
 /* Initialize the module */
 static int __init tcp_ml_register(void) {
+    /* Register the TCP CC algorithm */
     int ret = tcp_register_congestion_control(&tcp_ml);
     if (ret)
         return ret;
     LOG_KERN(KERN_INFO, "Registering tcp_ml");
+
+    // Create Netlink socket
+    netlink_sock = netlink_kernel_create(&init_net, NETLINK_MY_PROTOCOL, &my_netlink_cfg);
+    if (!netlink_sock) {
+        printk(KERN_ERR "Error creating Netlink socket\n");
+        return -ENOMEM;
+    }
+
+    printk(KERN_INFO "Created Netlink socket\n");
+
+
     return 0;
 }
 
 /* Clean up the module */
 static void __exit tcp_ml_unregister(void) {
+    netlink_kernel_release(netlink_sock);
+    printk(KERN_INFO "Released Netlink socket\n");
+
+    /* Unregister the TCP CC algorithm */
     LOG_KERN(KERN_INFO, "Unregistering tcp_ml");
     tcp_unregister_congestion_control(&tcp_ml);
 }

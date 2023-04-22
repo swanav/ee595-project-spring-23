@@ -7,9 +7,10 @@ module: tcp_ml.c
 	make -C $(BUILD_DIR) M=$(PWD) modules
 
 driver: tcp_ml_driver.cc
-	g++ -o $(OUTPUT_DIR)/driver tcp_ml_driver.cc
+	g++ -o driver tcp_ml_driver.cc
 
 all: module driver
 
 clean:
 	make -C $(BUILD_DIR) M=$(PWD) clean
+	rm driver

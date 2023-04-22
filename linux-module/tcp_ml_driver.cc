@@ -58,6 +58,7 @@ int main() {
     load_kernel_module();
     activate_tcp_ml();
     make_curl_request(); // Do something
+    sleep(10); // Need to sleep for a second to make sure the kernel module is unloaded else it will fail
     deactivate_tcp_ml();
     sleep(1); // Need to sleep for a second to make sure the kernel module is unloaded else it will fail
     unload_kernel_module();
