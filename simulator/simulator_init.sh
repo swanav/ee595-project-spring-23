@@ -27,5 +27,7 @@ rm -rf ns-allinone-3.38.tar.bz2
 # Create symbolic link of the new file to scratch folder
 ln -sf $(pwd)/congestion_simulations ./ns-allinone-3.38/ns-3.38/scratch/congestion_simulations
 
-
-
+# Build NS3
+cd ns-allinone-3.38/ns-3.38 
+./ns3 configure
+./ns3 build
