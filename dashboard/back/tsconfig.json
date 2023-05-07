@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+      /* Basic Options */
+      "target": "es6" /* Specify ECMAScript target version. */,
+      "module": "commonjs" /* Specify module code generation. */,
+      "sourceMap": false /* Generates corresponding '.map' file. */,
+      "outDir": "./dist" /* Redirect output structure to the directory. */,
+      "rootDir": "./src" /* Specify the root directory of input files. */,
+  
+      /* Strict Type-Checking Options */
+      "strict": true /* Enable all strict type-checking options. */,
+  
+      /* Module Resolution Options */
+      "moduleResolution": "node" /* Specify module resolution strategy. */,
+      "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+      "paths": {
+        "*": ["node_modules/", "src/types/*"]
+      } ,
+      "esModuleInterop": true ,
+  
+      /* Advanced Options */
+      "skipLibCheck": true /* Skip type checking of declaration files. */,
+      "forceConsistentCasingInFileNames": true 
+    },
+    "include": ["src/**/*"],
+  "exclude": ["src/types/*.ts", "node_modules", ".vscode"]
+  }

@@ -16,12 +16,12 @@ from dqn import DQN
 
 import tcp_ml_env
 
-model_name = 'CartPole-v1' or 'TCP-ML-v1'
+model_name = 'TCP-ML-v1'
 
 if not os.path.exists('model.pth'):
     env = gym.make(model_name)
 else:
-    env = gym.make(model_name, render_mode="human")
+    env = gym.make(model_name)
 
 plt.ion()
 
@@ -31,7 +31,7 @@ cpu = torch.device("cpu")
 torch.set_default_device(cpu)
 
 # Hyperparameters
-num_episodes = 1000
+num_episodes = 500
 BATCH_SIZE = 128
 GAMMA = 0.99
 EPS_START = 0.9

@@ -14,4 +14,5 @@ print(f"Pandas {pd.__version__}")
 print(f"Scikit-Learn {sk.__version__}")
 print(f"SciPy {sp.__version__}")
 gpu = len(tf.config.list_physical_devices('GPU'))>0
+print(tf.config.list_physical_devices())
 print("GPU is", "available" if gpu else "NOT AVAILABLE")

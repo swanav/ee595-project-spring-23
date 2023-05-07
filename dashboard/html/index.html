@@ -5,14 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Machine Learning based TCP Congestion Control (ML-TCPCC)</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css" /> -->
+    <link rel="stylesheet" href="semantic.css">
+    <script src="jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+    <!-- <script src="semantic.js"></script> -->
+
 </head>
 
 <body>
-
-    <div class="container">
-        <h1>Machine Learning based TCP Congestion Control (ML-TCPCC)</h1>
+    <div class="ui menu">
+        <a class="header item">Machine Learning based TCP Congestion Control (TCP-ML)</a>
+        <div class="right menu">
+            <a class="header item">EE595 Software Design and Optimization</a>
+        </div>
+    </div>
+    <div class="ui container">
+        <h1>Setup</h1>
         <form>
+            <div class="ui action left icon input">
+                <i class="computer icon"></i>
+                <input type="text" placeholder="Search...">
+                <div class="ui dropdown label">
+                    <div class="text" tabindex="">Choice 1</div>
+                    <div class="menu transition hidden" tabindex="-1">
+                        <div class="item active selected">Choice 1</div>
+                        <div class="item">Choice 2</div>
+                        <div class="item">Choice 3</div>
+                    </div>
+                </div>
+                <div class="ui floating search dropdown button">
+                    <input class="search" autocomplete="off" tabindex="0"><span class="text">Danish</span>
+                    <div class="menu transition hidden" tabindex="-1">
+                      <div class="item active selected">Danish</div>
+                      <div class="item">English</div>
+                    </div>
+                  </div>
+            </div>
+            <div class="ui dropdown item" tabindex="0">
+                Dropdown
+                <i class="dropdown icon"></i>
+                <div class="menu transition hidden" tabindex="-1">
+                  <div class="item">Action</div>
+                  <div class="item">Another Action</div>
+                  <div class="item">Something else here</div>
+                  <div class="divider"></div>
+                  <div class="item">Separated Link</div>
+                  <div class="divider"></div>
+                  <div class="item">One more separated link</div>
+                </div>
+              </div>
+            <div class="ui "></div>
+            <button class="ui primary button">Primary</button>
             <div class="form-group">
                 <label for="network-topology-select">Network Topology:</label>
                 <select class="form-control" id="network-topology-select">
@@ -21,15 +65,15 @@
             </div>
             <div class="form-group">
                 <label for="number-of-nodes-input">Number of Nodes:</label>
-                <input type="number" class="form-control" id="number-of-nodes-input" min="1" max="100" value="20" >
+                <input type="number" class="form-control" id="number-of-nodes-input" min="1" max="100" value="20">
             </div>
             <div class="form-group">
                 <label for="number-of-nodes-input">Data Rate of Each Node (Kbps)</label>
-                <input type="number" class="form-control" id="rate-of-nodes-input" value="1024" >
+                <input type="number" class="form-control" id="rate-of-nodes-input" value="1024">
             </div>
             <div class="form-group">
                 <label for="number-of-nodes-input">Data Rate of Congestion Link(s) (Kbps):</label>
-                <input type="number" class="form-control" id="rate-of-cong-link-input" value="512" >
+                <input type="number" class="form-control" id="rate-of-cong-link-input" value="512">
             </div>
             <div class="form-group">
                 <label for="tcp-congestion-control-checkboxes">TCP Congestion Control Algorithm:</label>
@@ -66,10 +110,9 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

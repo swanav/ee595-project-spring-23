@@ -13,31 +13,46 @@ class TcpMlEnv(gym.Env):
         # the number of unacknowledged packets, 
         # the round-trip time, etc.
 
-        low_state = np.array([0])
-        high_state = np.array([0])
+        # The observation space should represent the current state of the TCP connection,
+        # RTT can be represented as a float value with a range of 0 to infty.
+        rtt_low = 0
+        rtt_high = np.inf
+        # The receiver window size can be represented as an integer value with a range of 0 to infty.
+        receiver_window_size_low = 0
+        receiver_window_size_high = np.inf
+        # The congestion window size can be represented as a integer value with a range of 0 to receiver window size.
+        congestion_window_size_low = 0
+        congestion_window_size_high = np.inf
+        # The number of unacknowledged packets can be represented as an integer value with a range of 0 to infty.
+        unacknowledged_packets_low = 0
+        unacknowledged_packets_high = np.inf
+        # The number of duplicate acknowledgements can be represented as an integer value with a range of 0 to 10.
+        duplicate_acknowledgements_low = 0
+        duplicate_acknowledgements_high = 10
+        # The number of retransmissions can be represented as an integer value with a range of 0 to infty.
+        retransmissions_low = 0
+        retransmissions_high = np.inf
 
-        self.observation_space = gym.spaces.Box(
-            low=low_state,
-            high=high_state,
-            dtype=np.float32,
-        )
+
+        low_state  = np.array([rtt_low,  receiver_window_size_low,  congestion_window_size_low,  unacknowledged_packets_low,  duplicate_acknowledgements_low,  retransmissions_low])
+        high_state = np.array([rtt_high, receiver_window_size_high, congestion_window_size_high, unacknowledged_packets_high, duplicate_acknowledgements_high, retransmissions_high])
+        self.observation_space = gym.spaces.Box(low=low_state, high=high_state, dtype=np.float32)
 
         # The action space should represent the available actions 
         # that the agent can take, which includes increasing or 
-        # decreasing the congestion window size, increasing or 
-        # decreasing the sending rate, etc.
+        # decreasing the congestion window size or keeping it the same.
         self.action_space = gym.spaces.Discrete(2)
 
     def step(self, action):
-        print(action)
+        # print(action)
         # observation, reward, terminated, truncated, info
         return self.observation_space.sample(), 0, False, False, {}
 
     def reset(self, seed=None):
         super().reset(seed=seed)
-        print("Resetting the environment")
-        print(f"Seed: {seed}")
-        print(f"Observation Space: {self.observation_space}")
+        # print("Resetting the environment")
+        # print(f"Seed: {seed}")
+        # print(f"Observation Space: {self.observation_space}")
         return self.observation_space.sample(), {}
 
         
@@ -47,10 +62,6 @@ class TcpMlEnv(gym.Env):
 
     def close(self):
         pass
-
-
-
-    
 
 register(
     id="TCP-ML-v1",
