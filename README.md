@@ -1,4 +1,4 @@
-# Machine Learning based TCP Congestion Control (ML-TCPCC)
+# Machine Learning based TCP Congestion Control
 
 - **Rutuparna K Patkar**
   - *rpatkar@usc.edu*
