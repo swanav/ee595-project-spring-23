@@ -27,3 +27,50 @@ We propose to use a Deep Reinforcement Learning based Dynamic TCP Congestion Con
 - MongoDb
 - Python
   - PyTorch
+
+## Directory structure
+- dashboard
+  - Contains the React Project implementing the Web Dashboard in the `dash` directory.
+  - Contains the ExpressJs based Backend server for the web dashboard which orchestrates simulations and provides APIs for the frontend to view results of the simulation
+- linux-module
+  - Contains our attempt at creating a Linux Kernel Module for use in actual linux kernels. (This effort was abandoned due to Software Challenges as mentioned in the report.)
+- ml-experiments
+  - Contains some attempts at using classified learning to attempt loss differentiation.
+- reinforcement learning
+  - Contains our attempts to understand the concepts around reinforcement learning. Contains some sample programs from the pytorch library and attempts at creating a Gym environment for the TCP-ML library.
+- simulator
+  - Contains the NS-3 simulation
+- submissions
+  - Contain the previous submitted reports in md format.
+
+## Getting Started
+
+- First install the required dependencies.
+
+- Download the ns3 Network simulator in the `simulator` directory by entering the following command
+```bash
+~/simulator $ ./simulator_init.sh
+```
+
+### Start the web application
+
+- Start the backend server by navigating to `dashboard -> back` directory and entering the following command
+```bash
+~/dashboard/back $ npm run dev
+```
+
+- Start the web dashboard by navigating to `dashboard -> dash` directory and entering the following command
+```bash
+~/dashboard/dash $ npm start
+```
+
+### Simulate and train the model.
+
+- Navigate to the directory with the NS-3 simulation and enter the following commands in two separate terminals
+```bash
+~/simulator/ns-allinone-3.38/ns-3.38 $ python scratch/congestion_simulations/rl_agent.py
+```
+```bash
+~/simulator/ns-allinone-3.38/ns-3.38 $ export NS_GLOBAL_VALUE=SharedMemoryKey=4321;SharedMemoryPoolSize=4096;
+~/simulator/ns-allinone-3.38/ns-3.38 $ ./ns3 run scratch/congestion_simulations/main.cc -- --transport_prot=TcpMl
+```
